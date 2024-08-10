@@ -9,33 +9,31 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DaoH2Connection implements IDao<Veterinario> {
+public class DaoH2Veterinario implements IDao<Veterinario> {
 
-    public static final Logger logger = Logger.getLogger(DaoH2.class);
-    public static final String INSERT = "INSERT INTO MEDICAMENTOS VALUES (DEFAULT, ?,?,?,?)";
-    public static final String SELECT_NOMBRE = "SELECT * FROM MEDICAMENTOS WHERE NOMBRE = ?";
-    public static final String SELECT_ALL = "SELECT * FROM MEDICAMENTOS";
+    public static final Logger logger = Logger.getLogger(DaoH2Veterinario.class);
+    public static final String INSERT = "INSERT INTO VETERINARIOS VALUES (DEFAULT, ?,?,?,?)";
+    public static final String SELECT_ALL = "SELECT * FROM VETERINARIOS";
     @Override
-    public Medicamento guardar(Medicamento medicamento) {
+    public Veterinario guardar(Veterinario veterinario) {
         Connection connection = null;
-        Medicamento medicamentoARetornar = null;
+        Veterinario veterinarioARetornar = null;
         try {
             connection = H2Connection.getConnection();
             connection.setAutoCommit(false);
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, medicamento.getNombre());
-            preparedStatement.setString(2, medicamento.getLaboratorio());
-            preparedStatement.setInt(3, medicamento.getCantidad());
-            preparedStatement.setDouble(4, medicamento.getPrecio());
+            preparedStatement.setString(1, veterinario.getNroLicencia());
+            preparedStatement.setString(2, veterinario.getNombre());
+            preparedStatement.setString(3, veterinario.getApellido());
+            preparedStatement.setString(4, veterinario.getEspecialidad());
             preparedStatement.executeUpdate();
 
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()){
                 Integer idDesdeDB = resultSet.getInt(1);
-                medicamentoARetornar = new Medicamento(idDesdeDB, medicamento.getNombre(), medicamento.getLaboratorio(),
-                        medicamento.getCantidad(), medicamento.getPrecio());
+                veterinarioARetornar = new Veterinario(idDesdeDB, veterinario.getNroLicencia(), veterinario.getNombre(), veterinario.getApellido(),veterinario.getEspecialidad());
             }
-            logger.info("medicamento guardado en base de datos"+ medicamentoARetornar );
+            logger.info("veterinario guardado en base de datos"+ veterinarioARetornar );
 
             connection.commit();
 
@@ -57,28 +55,28 @@ public class DaoH2Connection implements IDao<Veterinario> {
                 e.printStackTrace();
             }
         }
-        return medicamentoARetornar;
+        return veterinarioARetornar;
     }
 
     @Override
     public List<Veterinario> listarTodos() {
         Connection connection = null;
-        List<Medicamento> medicamentos = new ArrayList<>();
-        Medicamento medicamentoDesdeLaDB = null;
+        List<Veterinario> veterinarios = new ArrayList<>();
+        Veterinario veterinarioDesdeLaDB = null;
         try{
             connection = H2Connection.getConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
             while (resultSet.next()){
                 Integer id = resultSet.getInt(1);
-                String nombreMed = resultSet.getString(2);
-                String laboratorio = resultSet.getString(3);
-                int cantidad = resultSet.getInt(4);
-                double precio = resultSet.getDouble(5);
-                medicamentoDesdeLaDB = new Medicamento(id, nombreMed, laboratorio, cantidad, precio);
+                String nrolicencia = resultSet.getString(2);
+                String nombre = resultSet.getString(3);
+                String apellido= resultSet.getString(4);
+                String especialidad = resultSet.getString(5);
+                veterinarioDesdeLaDB = new Veterinario(id, nrolicencia, nombre, apellido, especialidad);
                 // vamos cargando la lista de medicamentos
-                medicamentos.add(medicamentoDesdeLaDB);
-                logger.info("medicamento "+ medicamentoDesdeLaDB);
+                veterinarios.add(veterinarioDesdeLaDB);
+                logger.info("medicamento "+ veterinarioDesdeLaDB);
             }
 
         }catch (Exception e){
@@ -90,6 +88,6 @@ public class DaoH2Connection implements IDao<Veterinario> {
                 logger.error(e.getMessage());
             }
         }
-        return medicamentos;
+        return veterinarios;
     }
 }

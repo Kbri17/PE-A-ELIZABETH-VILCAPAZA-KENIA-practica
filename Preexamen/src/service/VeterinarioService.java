@@ -1,7 +1,25 @@
 package service;
 
+import dao.IDao;
+import model.Veterinario;
+
+import java.util.List;
+
 public class VeterinarioService {
-    public static void main(String[] args) {
-        System.out.println("Holamundo");
+    private IDao<Veterinario> veterinarioIDao;
+
+    public VeterinarioService(IDao<Veterinario> veterinarioIDao) {
+        this.veterinarioIDao = veterinarioIDao;
     }
-}
+
+    public Veterinario guardarVeterinario(Veterinario veterinario){
+        return veterinarioIDao.guardar(veterinario);
+    }
+    public List<Veterinario> listarTodos() {
+        return veterinarioIDao.listarTodos();
+    }
+
+
+    }
+
+
