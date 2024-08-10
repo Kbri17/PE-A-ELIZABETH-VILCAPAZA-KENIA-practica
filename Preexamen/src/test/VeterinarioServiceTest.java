@@ -1,6 +1,12 @@
 package test;
 
+import dao.impl.DaoH2Veterinario;
+import model.Veterinario;
 import org.apache.log4j.Logger;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import service.VeterinarioService;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,7 +42,6 @@ class VeterinarioServiceTest {
 
         //Dado
         Veterinario veterinario = new Veterinario("234","Carlos","Perez","Urologo");
-                new Veterinario("234","Carlos","Perez","Urologo"));
         //cuando
         Veterinario veterinarioDesdeDb = veterinarioService.guardarVeterinario(veterinario);
         // entonces

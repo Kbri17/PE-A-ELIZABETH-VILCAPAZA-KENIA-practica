@@ -1,0 +1,2 @@
+[2024-08-10 00:32:10] [ INFO ] [DaoH2Veterinario:36] veterinario guardado en base de datosVeterinario{id=1, nroLicencia='234', nombre='Carlos', apellido='Perez', especialidad='Urologo'}
+[2024-08-10 00:32:20] [ INFO ] [DaoH2Veterinario:36] veterinario guardado en base de datosVeterinario{id=1, nroLicencia='234', nombre='Carlos', apellido='Perez', especialidad='Urologo'}
